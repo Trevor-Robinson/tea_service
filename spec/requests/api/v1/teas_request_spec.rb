@@ -1,5 +1,5 @@
 require 'rails_helper'
-describe 'Teas API' do
+describe 'Teas' do
   it "returns a list of teas" do
     create_list(:tea, 5)
 

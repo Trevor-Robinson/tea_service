@@ -1,5 +1,5 @@
 require 'rails_helper'
-describe 'customers API' do
+describe 'customers' do
   it "returns a customer by id" do
     id = create(:customer).id
 
