@@ -30,20 +30,20 @@ describe 'subscriptions' do
     get "/api/v1/customers/#{customer.id}/subscriptions"
 
     expect(response).to be_successful
-    subscriptions = JSON.parse(response.body, symbolize_names: true)
+    subscriptions = JSON.parse(response.body, symbolize_names: true)[:data]
 
     subscriptions.each do |subscription|
       expect(subscription).to have_key(:id)
-      expect(subscription[:id]).to be_an(Integer)
-      expect(subscription).to have_key(:customer_id)
-      expect(subscription[:customer_id]).to be_a(Integer)
-      expect(subscription).to have_key(:tea_id)
-      expect(subscription[:tea_id]).to be_a(Integer)
-      expect(subscription).to have_key(:status)
-      expect(subscription).to have_key(:frequency)
-      expect(subscription[:frequency]).to be_a(String)
-      expect(subscription).to have_key(:boxes)
-      expect(subscription[:boxes]).to be_a(Integer)
+      expect(subscription[:id]).to be_an(String)
+      expect(subscription[:attributes]).to have_key(:tea_id)
+      expect(subscription[:attributes][:tea_id]).to be_a(Integer)
+      expect(subscription[:attributes]).to have_key(:status)
+      expect(subscription[:attributes]).to have_key(:frequency)
+      expect(subscription[:attributes][:frequency]).to be_a(String)
+      expect(subscription[:attributes]).to have_key(:tea_name)
+      expect(subscription[:attributes][:frequency]).to be_a(String)
+      expect(subscription[:attributes]).to have_key(:boxes)
+      expect(subscription[:attributes][:boxes]).to be_a(Integer)
     end
   end
 end
