@@ -19,4 +19,11 @@ describe 'customers' do
     expect(customer[:attributes]).to have_key(:address)
     expect(customer[:attributes][:address]).to be_a(String)
   end
+
+  it "returns an error if customer id is invalid" do
+    get "/api/v1/customers/99j"
+
+    expect(response.status).to be(404)
+    expect(response.body).to eq("Record Not Found")
+  end
 end
