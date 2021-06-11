@@ -22,6 +22,10 @@ describe 'subscriptions' do
 
     patch "/api/v1/customers/#{customer.id}/subscriptions/#{subscription.id}", params: {"status": false}
 
+    expect(response).to be_successful
+    subscription = JSON.parse(response.body, symbolize_names: true)[:data]
+    expect(subscription[:status]).to_not eq(current_status)
+
   end
   it "returns a customer's subscriptions by id" do
     customer_with_tea_subscriptions
@@ -41,9 +45,18 @@ describe 'subscriptions' do
       expect(subscription[:attributes]).to have_key(:frequency)
       expect(subscription[:attributes][:frequency]).to be_a(String)
       expect(subscription[:attributes]).to have_key(:tea_name)
-      expect(subscription[:attributes][:frequency]).to be_a(String)
+      expect(subscription[:attributes][:tea_name]).to be_a(String)
       expect(subscription[:attributes]).to have_key(:boxes)
       expect(subscription[:attributes][:boxes]).to be_a(Integer)
     end
+  end
+  it "returns an error if update request is sent for invalid subscriptions" do
+    customer_with_tea_subscriptions
+    customer = Customer.first
+
+    patch "/api/v1/customers/#{customer.id}/subscriptions/99j", params: {"status": false}
+
+    expect(response.status).to be(404)
+    expect(response.body).to eq("Record Not Found")
   end
 end
